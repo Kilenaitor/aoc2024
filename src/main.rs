@@ -1,6 +1,6 @@
 mod days;
 
-use days::{day::Day, day4::Day4};
+use days::{day::Day, day4::Day4, day5::Day5};
 
 use clap::{Parser, ValueEnum};
 
@@ -27,8 +27,9 @@ enum Part {
 fn main() {
     let cli = Cli::parse();
 
-    let day = match &cli.day {
-        4 => Day4 {},
+    let day: Box<dyn Day> = match &cli.day {
+        4 => Box::new(Day4 {}),
+        5 => Box::new(Day5 {}),
         _ => panic!("Not implemented"),
     };
 
