@@ -66,7 +66,9 @@ impl Day5 {
             }
         }
 
-        corrected_update[corrected_update.len() / 2].parse::<u16>().unwrap()
+        corrected_update[corrected_update.len() / 2]
+            .parse::<u16>()
+            .unwrap()
     }
 }
 
