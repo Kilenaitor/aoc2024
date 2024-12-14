@@ -155,10 +155,6 @@ impl Day for Day6 {
     fn part2(&self, input: &str) {
         let (mut obstacles, mut guard, map_size) = self.parse_input(&input);
         let mut visited_points: HashSet<FancyPoint> = HashSet::new();
-        let origin = Point {
-            x: guard.0.x,
-            y: guard.0.y,
-        };
 
         let mut new_obstacles: HashSet<Point> = HashSet::new();
         loop {
