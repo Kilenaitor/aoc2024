@@ -27,6 +27,31 @@ impl Day7 {
             }
         }
     }
+
+    fn can_make_total_p2(&self, remaining: f64, mut remaining_numbers: VecDeque<u32>) -> bool {
+        if remaining_numbers.len() == 0 {
+            remaining == 0.0
+        } else {
+            let next_value = remaining_numbers.pop_front().unwrap();
+            if next_value as f64 > remaining {
+                false
+            } else {
+                self.can_make_total_p2(remaining - next_value as f64, remaining_numbers.clone())
+                    || self
+                        .can_make_total_p2(remaining / next_value as f64, remaining_numbers.clone())
+                    || (remaining.to_string().ends_with(&next_value.to_string())
+                        && self.can_make_total_p2(
+                            remaining
+                                .to_string()
+                                .strip_suffix(&next_value.to_string())
+                                .unwrap()
+                                .parse::<f64>()
+                                .unwrap_or(-1.0),
+                            remaining_numbers.clone(),
+                        ))
+            }
+        }
+    }
 }
 
 impl Day for Day7 {
@@ -47,5 +72,20 @@ impl Day for Day7 {
         println!("{}", result);
     }
 
-    fn part2(&self, input: &str) {}
+    fn part2(&self, input: &str) {
+        let result = input
+            .lines()
+            .map(|line| {
+                let (total, numbers) = self.parse_input(line);
+                if self.can_make_total_p2(total, numbers.clone()) {
+                    total as u64
+                } else {
+                    0
+                }
+            })
+            .reduce(|total, next| total + next)
+            .unwrap();
+
+        println!("{}", result);
+    }
 }
